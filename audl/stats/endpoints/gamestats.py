@@ -1010,6 +1010,38 @@ class GameStats(Endpoint):
             else: 
                 print(f"t: {t}")
 
+    def get_all_game_ids(self):
+        path = "https://www.backend.audlstats.com/api/v1/games?date=2011:"
+        ids = pd.DataFrame(requests.get(path).json()['data'])['gameID'].values
+        return ids
+
+    def get_box_stats(self, dates='2023'):
+        '''
+        dates: An inclusive date range. The full format is YYYY-MM-DD:YYYY-MM-DD, but you can exclude months or days and it will infer them. Examples:
+        2021-06:2021-07 => All games during June or July
+        2021 => All games during 2021
+        2021-07-10: => All games on or after July 10th, 2021
+        :2012-05 => All games during or before May, 2012
+
+        default is all games in 2023
+        dates='2011:' will get all games
+        '''
+        def split_player(row):
+            return row['player']
+        ids = pd.DataFrame(requests.get(f"https://www.backend.audlstats.com/api/v1/games?date={dates}").json()['data'])['gameID'].values
+        all_games = []
+        for gameID in ids:
+            game = pd.DataFrame(requests.get(f'https://www.backend.audlstats.com/api/v1/playerGameStats?gameID={gameID}').json()['data'])
+            game_info = pd.DataFrame(requests.get(f'https://www.backend.audlstats.com/api/v1/games?gameIDs={gameID}').json()['data'])
+            players = pd.json_normalize(game.apply(split_player, axis=1))
+            box_stats = pd.merge(players, game.drop('player', axis=1), left_index=True, right_index=True)
+            box_stats['gameID'] = gameID
+            box_stats['date'] = game_info['startTimestamp'][0]
+            all_games.append(box_stats)
+        return pd.concat(all_games)
+
+
+
 #  ---------------------------------------------------------------------
 
 def main():
