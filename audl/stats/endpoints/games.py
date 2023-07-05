@@ -9,8 +9,8 @@ class Games(Endpoint):
     def get_request(self, endpoint):
         self.current_request = requests.get(f'{self.base_url}{endpoint}').json()['data']
     
-    def set_games(self, years='all'):
+    def set_games(self, years='2021:'):
         self.current_request = requests.get(f'{self.base_url}?date={years}').json()
     
-    def get_games(self, years='all'):
+    def get_games(self, years='2021:'):
         return pd.DataFrame(requests.get(f'{self.base_url}?date={years}').json()['data'])
