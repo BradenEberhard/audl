@@ -9,9 +9,9 @@ class Teams(Endpoint):
     def get_request(self, endpoint):
         self.current_request = requests.get(f'{self.base_url}{endpoint}').json()['data']
     
-    def set_teams(self, years='all'):
-        self.current_request = requests.get(f'{self.base_url}?years={years}').json()
+    def set_teams(self, years='2021:'):
+        self.current_request = requests.get(f'{self.base_url}?data={years}').json()
     
-    def get_teams(self, years='all'):
-        return pd.DataFrame(requests.get(f'{self.base_url}?years={years}').json()['data'])
+    def get_teams(self, years='2021:'):
+        return pd.DataFrame(requests.get(f'{self.base_url}?data={years}').json()['data'])
 
