@@ -20,6 +20,8 @@ class PlayerGameStats(Endpoint):
     def get_request_as_df(self, endpoint):
         return pd.DataFrame(requests.get(f'{self.base_url}{endpoint}').json()['data'])
 
+    def get_game_from_id(self, gameID):
+        return pd.DataFrame(requests.get(f'{self.base_url}playerGameStats?gameID={gameID}').json()['data'])
 
 
     def get_all_game_ids(self):
