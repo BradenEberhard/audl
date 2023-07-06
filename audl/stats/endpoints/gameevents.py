@@ -14,6 +14,28 @@ class GameEventsProxy(Endpoint):
     def get_throws_from_id(self, gameID):
         self.get_request(f'gameEvents?gameID={gameID}')
 
+        rows = []
+        for event in self.current_request['homeEvents']:
+            if event['type'] in [18, 19, 20, 22, 23]:
+                turnover = 1 if event['type'] in [20, 22, 23] else 0
+                event['turnover'] = turnover
+                if 'receiverX' not in event:
+                    event['receiverX'], event['receiverY'] = event['turnoverX'], event['turnoverY']
+                event['is_home_team'], event['turnoverX'], event['turnoverY'] = True, None, None
+                rows.append(event)
+
+        for event in self.current_request['awayEvents']:
+            if event['type'] in [18, 19, 20, 22, 23]:
+                turnover = 1 if event['type'] in [20, 22, 23] else 0
+                event['turnover'] = turnover
+                if 'receiverX' not in event:
+                    event['receiverX'], event['receiverY'] = event['turnoverX'], event['turnoverY']
+                event['is_home_team'], event['turnoverX'], event['turnoverY'] = False, None, None
+                rows.append(event)
+
+        return pd.DataFrame(rows).drop(['turnoverX', 'turnoverY'], axis=1)
+
+
 
 class TeamEvents():
     class PullEvent():
