@@ -11,6 +11,9 @@ class GameEventsProxy(Endpoint):
     def get_request(self, endpoint):
         self.current_request = requests.get(f'{self.base_url}{endpoint}').json()['data']
 
+    def get_throws_from_id(self, gameID):
+        self.get_request(f'gameEvents?gameID={gameID}')
+
 
 class TeamEvents():
     class PullEvent():
