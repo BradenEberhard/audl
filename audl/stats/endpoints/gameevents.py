@@ -36,6 +36,44 @@ class GameEventsProxy(Endpoint):
         return pd.DataFrame(rows).drop(['turnoverX', 'turnoverY'], axis=1)
 
 
+    def get_pulls_from_id(self, gameID):
+        self.get_request(f'gameEvents?gameID={gameID}')
+        rows = []
+        for event in self.current_request['homeEvents']:
+            pull_row = {}
+            if event['type'] == 7:
+                pull_row['pullX'] = event['pullX']
+                pull_row['pullY'] = event['pullY']
+                pull_row['pullMs'] = event['pullMs']
+                pull_row['puller'] = event['puller']
+                pull_row['in_bounds'] = True
+                rows.append(pull_row)
+            if event['type'] == 8:
+                pull_row['pullX'] = None
+                pull_row['pullY'] = None
+                pull_row['pullMs'] = None
+                pull_row['in_bounds'] = False
+                rows.append(pull_row)
+                
+
+        for event in self.current_request['awayEvents']:
+            pull_row = {}
+            if event['type'] == 7:
+                pull_row['pullX'] = event['pullX']
+                pull_row['pullY'] = event['pullY']
+                pull_row['pullMs'] = event['pullMs']
+                pull_row['puller'] = event['puller']
+                pull_row['in_bounds'] = True
+                rows.append(pull_row)
+            if event['type'] == 8:
+                pull_row['pullX'] = None
+                pull_row['pullY'] = None
+                pull_row['pullMs'] = None
+                pull_row['in_bounds'] = False
+                rows.append(pull_row)
+
+        return pd.DataFrame(rows)
+
 
 class TeamEvents():
     class PullEvent():
