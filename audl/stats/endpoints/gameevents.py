@@ -47,12 +47,14 @@ class GameEventsProxy(Endpoint):
                 pull_row['pullMs'] = event['pullMs']
                 pull_row['puller'] = event['puller']
                 pull_row['in_bounds'] = True
+                pull_row['is_home_team'] = True
                 rows.append(pull_row)
             if event['type'] == 8:
                 pull_row['pullX'] = None
                 pull_row['pullY'] = None
                 pull_row['pullMs'] = None
                 pull_row['in_bounds'] = False
+                pull_row['is_home_team'] = True
                 rows.append(pull_row)
                 
 
@@ -64,12 +66,14 @@ class GameEventsProxy(Endpoint):
                 pull_row['pullMs'] = event['pullMs']
                 pull_row['puller'] = event['puller']
                 pull_row['in_bounds'] = True
+                pull_row['is_home_team'] = False
                 rows.append(pull_row)
             if event['type'] == 8:
                 pull_row['pullX'] = None
                 pull_row['pullY'] = None
                 pull_row['pullMs'] = None
                 pull_row['in_bounds'] = False
+                pull_row['is_home_team'] = False
                 rows.append(pull_row)
 
         return pd.DataFrame(rows)
