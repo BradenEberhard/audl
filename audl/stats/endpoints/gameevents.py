@@ -74,7 +74,19 @@ class GameEventsProxy(Endpoint):
 
         return pd.DataFrame(rows)
 
-
+    def get_penalties_from_id(self, gameID): #TODO check who is on offense, count both recording and opposing teams
+        self.get_request(f'gameEvents?gameID={gameID}')
+        home_penalties, away_penalties = 0, 0
+        for event in self.current_request['homeEvents']:
+            if event['type'] == 16:
+                home_penalties = home_penalties + 1
+                
+        for event in self.current_request['awayEvents']:
+            if event['type'] == 16:
+                away_penalties = away_penalties + 1
+        return home_penalties, away_penalties
+    
+    
 class TeamEvents():
     class PullEvent():
         def __init__(self, puller = None, pull_x = None, pull_y = None, pull_ms = None):
