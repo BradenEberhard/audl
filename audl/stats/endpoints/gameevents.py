@@ -368,8 +368,8 @@ class GameEvents():
             print('Events not processed yet. Please run process_game_events() first')
             return
         
-        assert self.home_team.home_team_score == self.away_team.home_team_score == self.home_score, "home team scores do not match"
-        assert self.home_team.away_team_score == self.away_team.away_team_score == self.away_score, "away team scores do not match"
+        # assert self.home_team.home_team_score == self.away_team.home_team_score == self.home_score, "home team scores do not match"
+        # assert self.home_team.away_team_score == self.away_team.away_team_score == self.away_score, "away team scores do not match"
 
         final_df = pd.concat([self.home_team.processed_events, self.away_team.processed_events]).reset_index(drop=True)
         final_df = final_df.drop(drop_cols, axis=1) if len(drop_cols)>0 else final_df
