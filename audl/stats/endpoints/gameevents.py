@@ -53,6 +53,7 @@ class GameEventsProxy(Endpoint):
                 pull_row['pullX'] = None
                 pull_row['pullY'] = None
                 pull_row['pullMs'] = None
+                pull_row['puller'] = event['puller']
                 pull_row['in_bounds'] = False
                 pull_row['is_home_team'] = True
                 rows.append(pull_row)
