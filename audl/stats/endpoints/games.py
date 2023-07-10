@@ -16,5 +16,5 @@ class Games(Endpoint):
         return pd.DataFrame(requests.get(f'{self.base_url}?date={years}').json()['data'])
     
     def get_season_stats(self, season='2023'):
-        stats = requests.get(f'https://www.backend.audlstats.com/web-api/team-stats?year={season}').json()['stats']
+        stats = requests.get(f'https://www.backend.audlstats.com/web-api/team-stats?limit=50&year={season}').json()['stats']
         return stats
