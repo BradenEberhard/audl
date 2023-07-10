@@ -38,7 +38,7 @@ class TeamStats(Endpoint):
         self.team = team
 
     def get_year_stats(self):
-        out = requests.get(f'https://www.backend.audlstats.com/web-api/team-stats?limit=50&year={self.season}').json()['stats]
+        out = requests.get(f'https://www.backend.audlstats.com/web-api/team-stats?limit=50&year={self.season}').json()['stats']
         return out
 
     def get_table(self):
